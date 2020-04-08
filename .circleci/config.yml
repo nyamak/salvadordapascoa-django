@@ -1,0 +1,118 @@
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/python:3.7
+    - image: circleci/postgres:10
+      environment:
+        - POSTGRES_USER=ubuntu
+        - POSTGRES_DB=db_name
+        - POSTGRES_PASSWORD=password
+    - image: localstack/localstack:latest
+      ports:
+        - "4572:4572"
+      environment:
+        - SERVICES=s3:4572
+        - DEFAULT_REGION=us-east-1
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: sudo apt-get update && sudo apt-get install -y binutils libproj-dev gdal-bin libgeos-dev
+      - run:
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          command: |
+            . venv/bin/activate
+            pip install coverage mock
+      - run:
+          command: |
+            . venv/bin/activate
+            coverage run --omit 'venv/*' --branch --source . manage.py test
+          environment:
+            ENVIRONMENT: "test"
+            DATABASE_URL: "postgres://ubuntu:password@localhost:5432/db_name"
+      - run:
+          command: |
+            . venv/bin/activate
+            coverage html -d coverage-reports
+      - store_artifacts:
+          path: coverage-reports/
+
+  deploy-staging:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+      - run: sudo pip install ecs-deploy awscli
+      - run: eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email | sed 's|https://||')
+      - run: docker build -t salvadordapascoa-django .
+      - run: docker tag salvadordapascoa-django:latest $ECR_REPO_STAGING:staging
+      - run: docker push $ECR_REPO_STAGING:staging
+      - run: ecs deploy $AWS_CLUSTER_STAGING $AWS_SERVICE_STAGING --timeout $AWS_TIMEOUT
+
+  deploy-production:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+      - run: sudo pip install ecs-deploy awscli
+      - run: eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email | sed 's|https://||')
+      - run: docker build -t salvadordapascoa-django .
+      - run: docker tag salvadordapascoa-django:latest $ECR_REPO_PRODUCTION:$CIRCLE_TAG
+      - run: docker push $ECR_REPO_PRODUCTION:$CIRCLE_TAG
+      - run: ecs deploy -t $CIRCLE_TAG $AWS_CLUSTER_PRODUCTION $AWS_SERVICE_PRODUCTION --timeout $AWS_TIMEOUT
+
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+      - deploy-staging:
+          filters:
+            branches:
+              only:
+                - staging
+          requires:
+            - build
+      - deploy-alpha:
+          filters:
+            branches:
+              only:
+              - alpha
+          requires:
+          - build
+      - deploy-production:
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
+          requires:
+            - build
