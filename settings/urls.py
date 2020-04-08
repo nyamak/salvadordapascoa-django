@@ -21,4 +21,5 @@ urlpatterns = [
 
     # Applications
     url(r'^', include('accounts.urls')),
+    url(r'^', include('seller.urls')),
 ]
