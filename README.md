@@ -1,4 +1,12 @@
-# SalvadorDaPascoa Django
+# Salvador Da Pascoa - Django
+
+## Description
+Back end RESTful application written in Django for the [Salvador da Páscoa](https://www.salvadordapascoa.com.br/) 
+project, that links chocolate artisans and customers during the COVID-19 global pandemic.
+
+This project is supported by [COVID Solutions](https://www.covidsolutions.com.br/), a community dedicated to the
+idealization and execution of projects that help the community against COVID-19 and its impacts.
+
 
 ## Requirements
 
@@ -22,10 +30,10 @@ You need a `.env`file with your environment variables, here's an example file:
 ```
 LOAD_ENVS_FROM_FILE='True'
 ENVIRONMENT='development'
-SECRET_KEY='#*=JungleDjangoBoilerplate=*#'
-DEFAULT_FROM_EMAIL='Boilerplate <boilerplate@jungledevs.com>'
-DATABASE_URL='postgres://postgres:postgres@localhost:5432/boilerplate'
-SENTRY_DSN='sentry_key'
-AWS_STORAGE_BUCKET_NAME='django-be'
+SECRET_KEY='{secret_key}'
+DEFAULT_FROM_EMAIL='Salvador da Pascoa <noreply@salvadordapascoa.com.br>'
+DATABASE_URL='{database_url}'
+SENTRY_DSN='{sentry_key}'
+AWS_STORAGE_BUCKET_NAME='{aws_storage_bucket_name}'
 ```
         
