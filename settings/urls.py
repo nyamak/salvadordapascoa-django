@@ -24,3 +24,8 @@ urlpatterns = [
     url(r'^', include('seller.urls')),
     url(r'^', include('comments.urls')),
 ]
+
+
+admin.site.site_header = "Salvador da Páscoa - Admin"
+admin.site.site_title = "Portal de Administrador - Salvador da Páscoa"
+admin.site.index_title = "Painel de administração"
