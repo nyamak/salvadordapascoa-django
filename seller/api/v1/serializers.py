@@ -16,10 +16,10 @@ from seller.models import Seller, ProductImage
 
 # Product Image Serializer
 
-class ProductImageSerializer(serializers.ModelSerializer):
+class NestedProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ('image',)
+        fields = ('order', 'image',)
 
 
 # Seller Serializers
@@ -34,7 +34,7 @@ class ListSellersSerializer(serializers.ModelSerializer):
 
 
 class SellerDetailsSerializer(serializers.ModelSerializer):
-    product_images = ProductImageSerializer(many=True)
+    product_images = NestedProductImageSerializer(many=True)
     order_means = serializers.SerializerMethodField()
     delivery_means = serializers.SerializerMethodField()
 
