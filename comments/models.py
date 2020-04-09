@@ -43,3 +43,7 @@ class Comment(TimestampModel):
 
     def __str__(self):
         return f'{self.author.get_full_name() if self.author else "Anônimo"}: {self.body[:25]}'
+
+    class Meta:
+        verbose_name = _('Comentário')
+        verbose_name_plural = _('Comentários')
