@@ -31,7 +31,7 @@ class SellerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
     def filter_queryset(self, queryset):
         if not self.request.user.is_authenticated:
             queryset = queryset.filter(is_approved=True)
-        return queryset
+        return queryset.prefetch_related('order_means', 'delivery_means', 'product_images')
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action) or ListSellersSerializer
