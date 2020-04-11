@@ -7,7 +7,7 @@ API V1: Seller Urls
 from django.conf.urls import url, include
 from rest_framework_nested import routers
 
-from seller.api.v1.views import SellerViewSet
+from seller.api.v1.views import SellerViewSet, MySellerView
 
 ###
 # Routers
@@ -22,4 +22,5 @@ router.register(r'sellers', SellerViewSet, basename='sellers')
 ###
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^my-seller/$', MySellerView.as_view(), name='my-seller',)
 ]

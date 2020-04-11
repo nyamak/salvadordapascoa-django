@@ -9,9 +9,10 @@ import django_filters
 from django.db.models import Q
 from django_filters import rest_framework as filters
 from rest_framework import mixins, viewsets, permissions
+from rest_framework.generics import GenericAPIView
 
 from helpers.pagination import CustomResultsSetPagination
-from seller.api.v1.serializers import ListSellersSerializer, SellerDetailsSerializer
+from seller.api.v1.serializers import ListSellersSerializer, SellerDetailsSerializer, SellerCreationSerializer
 from seller.models import Seller
 
 ###
@@ -79,3 +80,26 @@ class SellerViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action) or ListSellersSerializer
+
+
+class MySellerView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = SellerCreationSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def get_object(self):
+        return self.request.user.seller
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

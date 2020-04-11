@@ -7,7 +7,7 @@ API V1: Seller Serializers
 
 from rest_framework import serializers
 
-from seller.models import Seller, ProductImage
+from seller.models import Seller, ProductImage, DeliveryMean, OrderMean
 
 
 ###
@@ -50,3 +50,26 @@ class SellerDetailsSerializer(serializers.ModelSerializer):
             'instagram_profile', 'name', 'neighborhood', 'city', 'state', 'description', 'telephone_number',
             'cover_image', 'whatsapp_number', 'delivery_means', 'order_means', 'product_images',
         )
+
+
+class SellerCreationSerializer(serializers.ModelSerializer):
+    delivery_means = serializers.SlugRelatedField(queryset=DeliveryMean.objects.all(), slug_field='slug', many=True)
+    order_means = serializers.SlugRelatedField(queryset=OrderMean.objects.all(), slug_field='slug', many=True)
+    product_images = NestedProductImageSerializer(many=True)
+
+    def create(self, validated_data):
+        product_images_data = validated_data.pop('product_images')
+        seller = Seller.objects.create(**validated_data)
+        for product_image in product_images_data:
+            ProductImage.objects.create(seller=seller, **product_image)
+        return seller
+
+    class Meta:
+        model = Seller
+        fields = (
+            'user', 'name', 'description', 'neighborhood', 'city', 'state', 'delivery_means', 'order_means',
+            'telephone_number', 'whatsapp_number', 'instagram_profile', 'ifood_url', 'uber_eats_url', 'rappi_url',
+            'site_url', 'cover_image', 'product_images', 'referrals', 'is_approved',
+        )
+        read_only_fields = ('id', 'user', 'is_approved',)
+
