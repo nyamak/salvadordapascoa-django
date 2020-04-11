@@ -1,3 +1,20 @@
+# [](https://github.com/nyamak/salvadordapascoa-django/compare/v0.1.0...v) (2020-04-11)
+
+
+### Bug Fixes
+
+* Add migration to Procfile. ([6f69592](https://github.com/nyamak/salvadordapascoa-django/commit/6f695922036c054806c09b5a32d612a527db713f))
+* Add Pillow to requirements.txt. ([a957229](https://github.com/nyamak/salvadordapascoa-django/commit/a95722983c829ce25d6c43d268a643b653487b4c))
+* Add Procfile. ([935c91e](https://github.com/nyamak/salvadordapascoa-django/commit/935c91eaa078bf2dc7e3cd44f59e63e4b542ad2a))
+* Add psycopg2 to requirements.txt. ([c75d4f7](https://github.com/nyamak/salvadordapascoa-django/commit/c75d4f7682ba2a7e020d08b607a990cb823f4749))
+
+
+### Features
+
+* Add .herokuapp.com to allowed hosts. ([2db70c9](https://github.com/nyamak/salvadordapascoa-django/commit/2db70c9181ac792bf11cb81a76b47a18acf1b7b4))
+
+
+
 #  (2020-04-11)
 
 
