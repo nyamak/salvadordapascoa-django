@@ -21,11 +21,11 @@ from seller.constants import STATE_CHOICES, FRIENDS, INSTAGRAM, FACEBOOK, TWITTE
 ###
 
 REFERRALS_CHOICES = [
-    (FRIENDS, _('Friends')),
+    (FRIENDS, _('Amigos')),
     (INSTAGRAM, _('Instagram')),
     (FACEBOOK, _('Facebook')),
     (TWITTER, _('Twitter')),
-    (OTHERS, _('others')),
+    (OTHERS, _('Outros')),
 ]
 
 
@@ -50,6 +50,8 @@ class Seller(TimestampModel):
 
     user = models.OneToOneField(
         User,
+        blank=True,
+        null=True,
         verbose_name=_('usuário'),
         on_delete=models.CASCADE,
         related_name='seller',
@@ -116,8 +118,7 @@ class Seller(TimestampModel):
         verbose_name=_('perfil do Instagram'),
         max_length=32,
         validators=[validators.RegexValidator(r'^@(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$'), ],
-        blank=True,
-        null=True,
+        unique=True,
     )
 
     ifood_url = models.URLField(
@@ -186,6 +187,12 @@ class ProductImage(TimestampModel):
         verbose_name=_('vendedor'),
         related_name='product_images',
         on_delete=models.CASCADE,
+    )
+
+    order = models.SmallIntegerField(
+        verbose_name=_('ordem'),
+        null=True,
+        blank=True,
     )
 
     image = models.ImageField(
