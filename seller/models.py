@@ -21,11 +21,11 @@ from seller.constants import STATE_CHOICES, FRIENDS, INSTAGRAM, FACEBOOK, TWITTE
 ###
 
 REFERRALS_CHOICES = [
-    (FRIENDS, _('Friends')),
+    (FRIENDS, _('Amigos')),
     (INSTAGRAM, _('Instagram')),
     (FACEBOOK, _('Facebook')),
     (TWITTER, _('Twitter')),
-    (OTHERS, _('others')),
+    (OTHERS, _('Outros')),
 ]
 
 
