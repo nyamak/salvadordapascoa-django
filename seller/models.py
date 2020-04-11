@@ -50,6 +50,8 @@ class Seller(TimestampModel):
 
     user = models.OneToOneField(
         User,
+        blank=True,
+        null=True,
         verbose_name=_('usuário'),
         on_delete=models.CASCADE,
         related_name='seller',
