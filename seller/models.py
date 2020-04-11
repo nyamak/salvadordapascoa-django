@@ -21,11 +21,11 @@ from seller.constants import STATE_CHOICES, FRIENDS, INSTAGRAM, FACEBOOK, TWITTE
 ###
 
 REFERRALS_CHOICES = [
-    (FRIENDS, _('Friends')),
+    (FRIENDS, _('Amigos')),
     (INSTAGRAM, _('Instagram')),
     (FACEBOOK, _('Facebook')),
     (TWITTER, _('Twitter')),
-    (OTHERS, _('others')),
+    (OTHERS, _('Outros')),
 ]
 
 
@@ -50,6 +50,8 @@ class Seller(TimestampModel):
 
     user = models.OneToOneField(
         User,
+        blank=True,
+        null=True,
         verbose_name=_('usuário'),
         on_delete=models.CASCADE,
         related_name='seller',

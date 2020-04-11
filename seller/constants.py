@@ -83,7 +83,7 @@ TELEPHONE_NUMBER_REGEX = r'^[0-9()+-].+$'
 MEANS_FIELDS_PAIRS = {
     'telephone': 'telephone_number',
     'whatsapp': 'whatsapp_number',
-    'ifood': 'ifood_url ',
+    'ifood': 'ifood_url',
     'uber_eats': 'uber_eats_url',
     'rappi': 'rappi_url',
     'website': 'site_url',
