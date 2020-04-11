@@ -89,6 +89,8 @@ INSTALLED_APPS = [
 
     # Applications
     'accounts',
+    'seller',
+    'comments',
 ]
 
 SITE_ID = 1
@@ -136,9 +138,9 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 ###
 # Internationalization
 ###
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -195,6 +197,10 @@ AUTHENTICATION_BACKENDS = (
 REST_AUTH_SERIALIZERS = {
     'TOKEN_SERIALIZER': 'accounts.api.v1.serializers.UserTokenSerializer',
     'PASSWORD_RESET_SERIALIZER': 'accounts.api.v1.serializers.PasswordResetSerializer',
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.api.v1.serializers.RegisterSerializer',
 }
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
@@ -296,7 +302,7 @@ LOGGING = {
     },
     'loggers': {
         'django.db.backends': {
-            'level': 'ERROR',
+            'level': 'DEBUG' if DEBUG else 'ERROR',
             'handlers': ['console'],
             'propagate': False,
         },
