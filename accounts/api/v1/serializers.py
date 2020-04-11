@@ -6,6 +6,7 @@ API V1: Accounts Serializers
 ###
 from django.contrib.auth.models import User
 from rest_auth.models import TokenModel
+from rest_auth.registration.serializers import RegisterSerializer as BaseRegisterSerializer
 from rest_auth.serializers import (
     UserDetailsSerializer as BaseUserDetailsSerializer,
     PasswordResetSerializer as BasePasswordResetSerializer,
@@ -21,6 +22,8 @@ from accounts.forms import (
 ###
 # Serializers
 ###
+
+
 class UserTokenSerializer(serializers.ModelSerializer):
     user = BaseUserDetailsSerializer()
 
@@ -53,3 +56,20 @@ class PasswordResetSerializer(BasePasswordResetSerializer):
             'email_template_name': 'account/password_reset_message.txt',
             'html_email_template_name': 'account/password_reset_message.html',
         }
+
+
+class RegisterSerializer(BaseRegisterSerializer):
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+
+    def get_cleaned_data(self):
+        return {
+            'username': self.validated_data.get('username', ''),
+            'password1': self.validated_data.get('password1', ''),
+            'email': self.validated_data.get('email', ''),
+            'first_name': self.validated_data.get('first_name', ''),
+            'last_name': self.validated_data.get('last_name', ''),
+        }
+
+
+
