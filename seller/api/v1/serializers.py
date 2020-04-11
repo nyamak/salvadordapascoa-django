@@ -4,9 +4,12 @@ API V1: Seller Serializers
 ###
 # Libraries
 ###
-
+from rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
+from seller.constants import MEANS_FIELDS_PAIRS
 from seller.models import Seller, ProductImage, DeliveryMean, OrderMean
 
 
@@ -53,6 +56,7 @@ class SellerDetailsSerializer(serializers.ModelSerializer):
 
 
 class SellerCreationSerializer(serializers.ModelSerializer):
+    user = UserDetailsSerializer()
     delivery_means = serializers.SlugRelatedField(queryset=DeliveryMean.objects.all(), slug_field='slug', many=True)
     order_means = serializers.SlugRelatedField(queryset=OrderMean.objects.all(), slug_field='slug', many=True)
     product_images = NestedProductImageSerializer(many=True)
@@ -63,6 +67,14 @@ class SellerCreationSerializer(serializers.ModelSerializer):
         for product_image in product_images_data:
             ProductImage.objects.create(seller=seller, **product_image)
         return seller
+
+    def validate(self, data):
+        order_means = data.get('order_means')
+        for mean in order_means:
+            if MEANS_FIELDS_PAIRS.get(mean.slug) not in list(data.keys()):
+                raise ValidationError(_(f'{mean.name} é citado como meio de pedido, mas dados não foram fornecidos.'))
+
+        return data
 
     class Meta:
         model = Seller
