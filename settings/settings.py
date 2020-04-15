@@ -10,6 +10,7 @@ import requests
 import dj_database_url
 import dotenv
 import sentry_sdk
+import django_heroku
 
 from s3_environ import S3Environ
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -153,7 +154,7 @@ USE_TZ = True
 # Static Files
 ###
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -347,3 +348,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 if not DEBUG and ENVIRONMENT != 'test':
     EMAIL_BACKEND = 'django_amazon_ses.EmailBackend'
     AWS_DEFAULT_REGION = 'us-west-2'
+
+django_heroku.settings(locals())
