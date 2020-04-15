@@ -1,3 +1,14 @@
+# [](https://github.com/nyamak/salvadordapascoa-django/compare/v0.1.1...v) (2020-04-15)
+
+
+### Bug Fixes
+
+* Fix 500 error when DEBUG=False. ([f71a474](https://github.com/nyamak/salvadordapascoa-django/commit/f71a474f8c18317d2aaca9464bc28ca88b86fac5))
+* Fix static files with Django Heroku. ([1c83c6f](https://github.com/nyamak/salvadordapascoa-django/commit/1c83c6f604dfdfb338b371a7ddb9a30301a763f1))
+* Fix static_root error. ([5a27218](https://github.com/nyamak/salvadordapascoa-django/commit/5a272182d54a8d023cb84c43ed3ecd59563f40c5))
+
+
+
 # [](https://github.com/nyamak/salvadordapascoa-django/compare/v0.1.0...v) (2020-04-11)
 
 
