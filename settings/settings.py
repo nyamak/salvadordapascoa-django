@@ -163,15 +163,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ###
 # Storage
 ###
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_AUTO_CREATE_BUCKET = True
-AWS_IS_GZIPPED = True
-AWS_QUERYSTRING_AUTH = False
-if DEBUG or ENVIRONMENT == 'test':
-    AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
-    AWS_SECRET_ACCESS_KEY = 'foo'
-    AWS_ACCESS_KEY_ID = 'foo'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# AWS_AUTO_CREATE_BUCKET = True
+# AWS_IS_GZIPPED = True
+# AWS_QUERYSTRING_AUTH = False
+# if DEBUG or ENVIRONMENT == 'test':
+#     AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
+#     AWS_SECRET_ACCESS_KEY = 'foo'
+#     AWS_ACCESS_KEY_ID = 'foo'
 
 ###
 # Rest Framework
