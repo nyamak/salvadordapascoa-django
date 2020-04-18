@@ -56,7 +56,7 @@ class SellerDetailsSerializer(serializers.ModelSerializer):
 
 
 class SellerCreationSerializer(serializers.ModelSerializer):
-    user = UserDetailsSerializer()
+    user = UserDetailsSerializer(read_only=True)
     delivery_means = serializers.SlugRelatedField(queryset=DeliveryMean.objects.all(), slug_field='slug', many=True)
     order_means = serializers.SlugRelatedField(queryset=OrderMean.objects.all(), slug_field='slug', many=True)
     product_images = NestedProductImageSerializer(many=True)
