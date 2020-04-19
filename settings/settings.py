@@ -163,15 +163,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ###
 # Storage
 ###
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_AUTO_CREATE_BUCKET = True
-AWS_IS_GZIPPED = True
-AWS_QUERYSTRING_AUTH = False
-if ENVIRONMENT == 'test':
-    AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
-    AWS_SECRET_ACCESS_KEY = 'foo'
-    AWS_ACCESS_KEY_ID = 'foo'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# AWS_AUTO_CREATE_BUCKET = True
+# AWS_IS_GZIPPED = True
+# AWS_QUERYSTRING_AUTH = False
+# if ENVIRONMENT == 'test':
+#     AWS_S3_ENDPOINT_URL = 'http://localhost:4572/'
+#     AWS_SECRET_ACCESS_KEY = 'foo'
+#     AWS_ACCESS_KEY_ID = 'foo'
 
 ###
 # Rest Framework
@@ -350,3 +350,6 @@ if not DEBUG and ENVIRONMENT != 'test':
     AWS_DEFAULT_REGION = 'us-west-2'
 
 django_heroku.settings(locals())
+
+ssl_require = os.environ['ENVIRONMENT'] != 'development'
+locals()['DATABASES']['default'] = dj_database_url.config(conn_max_age=django_heroku.MAX_CONN_AGE, ssl_require=ssl_require)
