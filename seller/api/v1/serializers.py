@@ -22,7 +22,7 @@ from seller.models import Seller, ProductImage, DeliveryMean, OrderMean
 class NestedProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ('order', 'image',)
+        fields = ('id', 'order', 'image',)
 
 
 # Seller Serializers
@@ -83,5 +83,5 @@ class SellerCreationSerializer(serializers.ModelSerializer):
             'telephone_number', 'whatsapp_number', 'instagram_profile', 'ifood_url', 'uber_eats_url', 'rappi_url',
             'site_url', 'cover_image', 'product_images', 'referrals', 'is_approved',
         )
-        read_only_fields = ('id', 'user', 'is_approved',)
+        read_only_fields = ('id', 'user', 'is_approved', 'product_images',)
 

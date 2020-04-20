@@ -10,10 +10,14 @@ from django.db.models import Q
 from django_filters import rest_framework as filters
 from rest_framework import mixins, viewsets, permissions
 from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import ModelViewSet
 
 from helpers.pagination import CustomResultsSetPagination
-from seller.api.v1.serializers import ListSellersSerializer, SellerDetailsSerializer, SellerCreationSerializer
-from seller.models import Seller
+from seller.api.v1.permissions import HasSeller
+from seller.api.v1.serializers import ListSellersSerializer, SellerDetailsSerializer, SellerCreationSerializer, \
+    NestedProductImageSerializer
+from seller.models import Seller, ProductImage
+
 
 ###
 # Filters
@@ -103,3 +107,18 @@ class MySellerView(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Up
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class MyProductImagesViewSet(ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated, HasSeller, ]
+    serializer_class = NestedProductImageSerializer
+    queryset = ProductImage.objects.all()
+
+    def filter_queryset(self, queryset):
+        queryset = queryset.filter(seller__user=self.request.user)
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(seller=self.request.user.seller)
+
+

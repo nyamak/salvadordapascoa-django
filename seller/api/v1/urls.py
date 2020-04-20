@@ -7,7 +7,7 @@ API V1: Seller Urls
 from django.conf.urls import url, include
 from rest_framework_nested import routers
 
-from seller.api.v1.views import SellerViewSet, MySellerView
+from seller.api.v1.views import SellerViewSet, MySellerView, MyProductImagesViewSet
 
 ###
 # Routers
@@ -16,6 +16,7 @@ from seller.api.v1.views import SellerViewSet, MySellerView
 """ Main router """
 router = routers.SimpleRouter()
 router.register(r'sellers', SellerViewSet, basename='sellers')
+router.register(r'my-product-images', MyProductImagesViewSet, basename='my-product-images')
 
 ###
 # URLs
