@@ -80,7 +80,7 @@ for index, row in df.iterrows():
         uber_eats_url=is_nan(row['UberEats']),
         rappi_url=is_nan(row['Rappi']),
         referrals=referrals_table[row['Como você nos achou?']] if row['Como você nos achou?'] in referrals_table.keys() else None,
-        cover_image=is_nan(row['photo']),
+        legacy_cover_image=is_nan(row['photo']),
         is_approved=True if str(row['accepted']) == 'True' else False
     )
 
@@ -102,7 +102,7 @@ for index, row in df.iterrows():
     for idx, image_url in enumerate(row_images):
         image = ProductImage(
             order=idx,
-            image=image_url
+            legacy_image=image_url
         )
         images_to_create[seller.instagram_profile].append(image)
 
