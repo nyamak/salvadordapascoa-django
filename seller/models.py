@@ -8,6 +8,7 @@ Seller Models
 import uuid
 
 from django.core import validators
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -149,6 +150,13 @@ class Seller(TimestampModel):
     cover_image = models.ImageField(
         verbose_name=_('foto de capa'),
         upload_to=UploadFileTo(UPLOAD_TO, 'cover'),
+        null=True,
+    )
+
+    legacy_cover_image = models.URLField(
+        verbose_name=_('foto de capa legado'),
+        null=True,
+        blank=True
     )
 
     # Misc
@@ -167,6 +175,11 @@ class Seller(TimestampModel):
 
     def __str__(self):
         return f'{self.name} ({self.city + " - " + self.state})'
+
+    def save(self, *args, **kwargs):
+        if not (self.cover_image or self.legacy_cover_image):
+            raise ValidationError('Vendedor deve ter algum modo de foto de capa.')
+        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = _('vendedor')
@@ -198,7 +211,20 @@ class ProductImage(TimestampModel):
     image = models.ImageField(
         verbose_name=_('foto'),
         upload_to=UploadFileTo(UPLOAD_TO, 'image'),
+        null=True,
     )
+
+    legacy_image = models.URLField(
+        verbose_name=_('imagem legado'),
+        blank=True,
+        null=True,
+        help_text=_('Link do Drive, para o processo de inscrição antigo')
+    )
+
+    def save(self, *args, **kwargs):
+        if not (self.image or self.legacy_image):
+            raise ValidationError('Imagem de produto deve ter algum modo de foto.')
+        return super().save(*args, **kwargs)
 
 
 class Mean(TimestampModel):

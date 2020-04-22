@@ -20,6 +20,15 @@ from seller.models import Seller, ProductImage, DeliveryMean, OrderMean
 # Product Image Serializer
 
 class NestedProductImageSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data.update(
+            {
+                'image': instance.image or instance.legacy_image,
+            }
+        )
+        return data
+
     class Meta:
         model = ProductImage
         fields = ('id', 'order', 'image',)
@@ -28,6 +37,15 @@ class NestedProductImageSerializer(serializers.ModelSerializer):
 # Seller Serializers
 
 class ListSellersSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data.update(
+            {
+                'cover_image': instance.cover_image or instance.legacy_cover_image,
+            }
+        )
+        return data
+
     class Meta:
         model = Seller
         fields = (
@@ -40,6 +58,15 @@ class SellerDetailsSerializer(serializers.ModelSerializer):
     product_images = NestedProductImageSerializer(many=True)
     order_means = serializers.SerializerMethodField()
     delivery_means = serializers.SerializerMethodField()
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data.update(
+            {
+                'cover_image': instance.cover_image or instance.legacy_cover_image,
+            }
+        )
+        return data
 
     def get_order_means(self, instance):
         return [mean.name for mean in instance.order_means.all()]
