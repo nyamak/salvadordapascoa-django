@@ -86,14 +86,7 @@ class SellerCreationSerializer(serializers.ModelSerializer):
     user = UserDetailsSerializer(read_only=True)
     delivery_means = serializers.SlugRelatedField(queryset=DeliveryMean.objects.all(), slug_field='slug', many=True)
     order_means = serializers.SlugRelatedField(queryset=OrderMean.objects.all(), slug_field='slug', many=True)
-    product_images = NestedProductImageSerializer(many=True)
-
-    def create(self, validated_data):
-        product_images_data = validated_data.pop('product_images')
-        seller = Seller.objects.create(**validated_data)
-        for product_image in product_images_data:
-            ProductImage.objects.create(seller=seller, **product_image)
-        return seller
+    product_images = NestedProductImageSerializer(many=True, required=False)
 
     def validate(self, data):
         order_means = data.get('order_means')
