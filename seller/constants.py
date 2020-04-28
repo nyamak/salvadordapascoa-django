@@ -87,4 +87,5 @@ MEANS_FIELDS_PAIRS = {
     'uber_eats': 'uber_eats_url',
     'rappi': 'rappi_url',
     'website': 'site_url',
+    'instagram': 'instagram_profile'
 }
