@@ -122,26 +122,30 @@ class Seller(TimestampModel):
         unique=True,
     )
 
-    ifood_url = models.URLField(
+    ifood_url = models.CharField(
         verbose_name=_('link do iFood'),
+        max_length=200,
         blank=True,
         null=True,
     )
 
-    uber_eats_url = models.URLField(
+    uber_eats_url = models.CharField(
         verbose_name=_('link do Uber Eats'),
+        max_length=200,
         blank=True,
         null=True,
     )
 
-    rappi_url = models.URLField(
+    rappi_url = models.CharField(
         verbose_name=_('link do Rappi'),
+        max_length=200,
         blank=True,
         null=True,
     )
 
-    site_url = models.URLField(
+    site_url = models.CharField(
         verbose_name=_('link do site'),
+        max_length=200,
         blank=True,
         null=True,
     )
