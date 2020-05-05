@@ -24,7 +24,7 @@ class NestedProductImageSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         data.update(
             {
-                'image': instance.image or instance.legacy_image,
+                'image': instance.image.url or instance.legacy_image,
             }
         )
         return data
