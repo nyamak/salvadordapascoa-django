@@ -41,5 +41,5 @@ ipython-genutils==0.2.0
 # Project Dependencies
 requests==2.20.0
 sentry-sdk==0.14.0
-Pillow==7.1.1
+Pillow==9.0.0
 django-heroku==0.3.1
